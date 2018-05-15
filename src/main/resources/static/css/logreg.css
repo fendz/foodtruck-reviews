@@ -1,0 +1,47 @@
+.log-reg {
+    width: 720px;
+    margin: 0 auto;
+}
+
+.log-reg > .box {
+    min-height: 460px;
+}
+
+.log-reg > .hero {
+    height: 80px;
+}
+
+.title {
+    margin-top: -25px !important;
+}
+
+.hero {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px; 
+}
+
+.box {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px; 
+}
+
+.at-bottom {
+	position: absolute;
+	bottom: 60px;
+	right: 350px;
+}
+
+.notification {
+	margin-top: -10px;
+	border-radius: 0px;
+	padding: 10px 20px 10px 20px;
+}
+
+.input {
+	border-radius: 0px;
+}
+
+.container {
+	min-height: 0;
+	background-color: transparent;
+}
