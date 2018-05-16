@@ -85,7 +85,7 @@
 			        <br>
 			        Review: ${r.text}
 			        <br>
-			        Rating: ${r.rating}
+			        Rating: ${r.rating} <span class="stars">${r.rating}</span>
 			      </p>
 			    </div>
 			  </div>
@@ -132,5 +132,8 @@
 		</form:form>
 		
 	</div>
+	
+	<script type="text/javascript" src="/js/stars.js"></script>
+	
 </body>
 </html>

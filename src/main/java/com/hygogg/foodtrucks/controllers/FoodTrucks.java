@@ -135,11 +135,6 @@ public class FoodTrucks {
 			model.addAttribute("stars", stars);
 			return "foodtruck";
 		}
-//		System.out.println(review.getTitle());
-//		System.out.println(review.getText());
-//		System.out.println(review.getRating());
-//		System.out.println(review.getUser().getUsername());
-//		System.out.println(review.getTruck());
 		review.setId(null);
 		Review r = rService.create(review);
 		FoodTruck t = ftservice.findOne(id);
