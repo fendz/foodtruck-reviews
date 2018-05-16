@@ -16,7 +16,7 @@ public class UserService {
 	
 	public UserService(UserRepository userRepository, BCryptPasswordEncoder bcrypt) {
 		this.userRepository = userRepository;
-		this.bcrypt =  bcrypt;
+		this.bcrypt = bcrypt;
 	}
 	
 	public User findByEmail(String email) {

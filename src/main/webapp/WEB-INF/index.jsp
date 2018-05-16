@@ -76,7 +76,58 @@
 				Welcome back ${user.username}!
 			</div>
 		</c:if>
+	
+		<c:forEach items="${foodtrucks}" var="foodtruck">	
+			<article class="media">
+			  <figure class="media-left">
+			    <p class="image is-64x64">
+			      <i class="fas fa-truck is-large fa-3x"></i>
+			    </p>
+			  </figure>
+			  <div class="media-content">
+			    <div class="content">
+			      <p>
+			        <strong>${foodtruck.name}</strong>
+			        <br>
+			        Style: ${foodtruck.style}
+			        <br>
+			        Description: ${foodtruck.description}
+			        <br>
+			        Rating: ${foodtruck.avgRating} <span class="stars">${foodtruck.avgRating}</span>
+			      </p>
+			    </div>
+			  </div>
+			  <div class="media-right">
+			  	<c:if test="${user.id == foodtruck.op.id}">
+			  		<a href="/foodtruck/${foodtruck.id}/edit" class="button is-info">Edit</a>
+			  	</c:if>
+			    <a href="/foodtruck/${foodtruck.id}" class="button is-primary">Review</a>
+			  </div>
+			</article>
+		</c:forEach>
 		
 	</div>
+	
+	<script>
+		const stars = document.getElementsByClassName("stars");
+		const full = `<i class="fas fa-star"></i>`;
+		const half = `<i class="fas fa-star-half"></i>`;
+		const empty = `<i class="far fa-star"></i>`;
+
+		for(let star of stars){
+			console.log(star);
+			let s = parseFloat(star.innerHTML);
+			let t = "";
+			for(var i=1; i<=s; i++){
+				t += full;
+			}
+			if(s%1 >= 0.5){
+				t += half;
+			}
+			star.innerHTML = t;
+			console.log(t);
+		}
+	
+	</script>
 </body>
 </html>

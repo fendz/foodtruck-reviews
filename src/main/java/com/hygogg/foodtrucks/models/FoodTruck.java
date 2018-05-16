@@ -7,40 +7,37 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="users")
-public class User {
+@Table(name="foodtrucks")
+public class FoodTruck {
 
 	@Id
 	@GeneratedValue
 	private Long id;
-	private String username;
-	private String email;
-	private String password;
-	@Transient
-	private String confirm;
-	@OneToMany(mappedBy="op", fetch = FetchType.LAZY)
-    private List<FoodTruck> trucks;
-	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+	@Size(min=3, message="Name must 3 characters or longer")
+	private String name;
+	@Size(min=3, message="Style must be 3 characters or longer")
+	private String style;
+	@Size(min=15, message="Description must be 15 characters or longer")
+	private String description;
+	private Double avgRating;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User op;
+	@OneToMany(mappedBy="truck", fetch = FetchType.LAZY)
     private List<Review> reviews;
 	private Date createdAt;
 	private Date updatedAt;
 	
-	public User() {
-	}
-	
-	public User(String username, String email, String password) {
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.createdAt = new Date();
-		this.updatedAt = new Date();
+	public FoodTruck() {
 	}
 
 	public Long getId() {
@@ -51,46 +48,46 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getStyle() {
+		return style;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setStyle(String style) {
+		this.style = style;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getConfirm() {
-		return confirm;
+	public Double getAvgRating() {
+		return avgRating;
 	}
 
-	public void setConfirm(String confirm) {
-		this.confirm = confirm;
+	public void setAvgRating(Double avgRating) {
+		this.avgRating = avgRating;
+	}
+
+	public User getOp() {
+		return op;
+	}
+
+	public void setOp(User op) {
+		this.op = op;
 	}
 	
-	public List<FoodTruck> getTrucks() {
-		return trucks;
-	}
-
-	public void setTrucks(List<FoodTruck> trucks) {
-		this.trucks = trucks;
-	}
-
 	public List<Review> getReviews() {
 		return reviews;
 	}

@@ -81,6 +81,7 @@ public class UserValidator {
 			valid = false;
 		}
 		
+		// if valid login return the user otherwise null
 		return valid ? user : null;
 		
 	}
