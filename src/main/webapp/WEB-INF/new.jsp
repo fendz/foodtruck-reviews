@@ -111,7 +111,7 @@
 		                    <form:errors path="description"/>
 		            	</div>
 		            </div>
-		            <input type="hidden" name="op" value="${user.id}"/>
+			        <input type="hidden" name="op" value="${user.id}"/>
 		            <button type="submit" class="button is-primary">Submit</button>
 		            <a href="/" class="button is-danger">Cancel</a>
 				</form:form>

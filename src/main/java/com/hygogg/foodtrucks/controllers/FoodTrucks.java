@@ -91,19 +91,38 @@ public class FoodTrucks {
 	}
 	
 	@RequestMapping("foodtrucks/new")
-	public String newFoodtruck(Model model) {			
+	public String newFoodtruck(Model model, HttpSession session, RedirectAttributes flash) {		
 		model.addAttribute("foodtruck", new FoodTruck());
+		User user = (User) session.getAttribute("user");
+		if(user == null) {
+			flash.addFlashAttribute("errors", "You must be logged in to do this!");
+			return "redirect:/";
+		}
 		return "new";
 	}
 	
 	@RequestMapping("foodtruck/{id}/edit")
-	public String newFoodtruck(Model model, @PathVariable("id") Long id) {
-		model.addAttribute("foodtruck", ftservice.findOne(id));
+	public String newFoodtruck(Model model, @PathVariable("id") Long id, HttpSession session, RedirectAttributes flash) {
+		FoodTruck ft = ftservice.findOne(id);
+		User user = (User) session.getAttribute("user");
+		if(user == null) {
+			flash.addFlashAttribute("errors", "You must be logged in to do this!");
+			return "redirect:/";
+		}else if(user.getId() != ft.getOp().getId()) {
+			flash.addFlashAttribute("errors", "You cannot edit this foodtruck!");
+			return "redirect:/";
+		}
+		model.addAttribute("foodtruck", ft);
 		return "edit";
 	}
 	
 	@PostMapping("foodtrucks")
-	public String foodtrucks(@Valid @ModelAttribute("foodtruck") FoodTruck foodTruck, BindingResult result) {
+	public String foodtrucks(@Valid @ModelAttribute("foodtruck") FoodTruck foodTruck, BindingResult result, HttpSession session, RedirectAttributes flash) {
+		User user = (User) session.getAttribute("user");
+		if(user == null) {
+			flash.addFlashAttribute("errors", "You must be logged in to do this!");
+			return "redirect:/";
+		}
 		if(result.hasErrors()) {
 			return "new";
 		}
@@ -112,7 +131,16 @@ public class FoodTrucks {
 	}
 	
 	@PostMapping("foodtruck/{id}/update")
-	public String newFoodtruck(@Valid @ModelAttribute("foodtruck") FoodTruck foodTruck, BindingResult result, @PathVariable("id") Long id) {
+	public String newFoodtruck(@Valid @ModelAttribute("foodtruck") FoodTruck foodTruck, BindingResult result, @PathVariable("id") Long id, HttpSession session, RedirectAttributes flash) {
+		FoodTruck ft = ftservice.findOne(id);
+		User user = (User) session.getAttribute("user");
+		if(user == null) {
+			flash.addFlashAttribute("errors", "You must be logged in to do this!");
+			return "redirect:/";
+		}else if(user.getId() != ft.getOp().getId()) {
+			flash.addFlashAttribute("errors", "You cannot edit this foodtruck!");
+			return "redirect:/";
+		}
 		if(result.hasErrors()) {
 			return "edit";
 		} 
@@ -129,16 +157,28 @@ public class FoodTrucks {
 	}
 	
 	@PostMapping("foodtruck/{id}/review")
-	public String review(@Valid @ModelAttribute("review") Review review, BindingResult result, Model model, @PathVariable("id") Long id) {
+	public String review(@Valid @ModelAttribute("review") Review review, BindingResult result, Model model, @PathVariable("id") Long id, HttpSession session, RedirectAttributes flash) {
+		User user = (User) session.getAttribute("user");
+		if(user == null) {
+			flash.addFlashAttribute("errors", "You must be logged in to do this!");
+			return String.format("redirect:/foodtruck/%d", id);
+		}
 		if(result.hasErrors()) {
 			model.addAttribute("foodtruck", ftservice.findOne(id));
 			model.addAttribute("stars", stars);
 			return "foodtruck";
 		}
-		review.setId(null);
-		rService.create(review);
 		FoodTruck t = ftservice.findOne(id);
 		List<Review> reviews = t.getReviews();
+		for(Review rev: reviews) {
+			if(rev.getUser().getId() == user.getId()) {
+				flash.addFlashAttribute("errors", "You have already left a review!");
+				return String.format("redirect:/foodtruck/%d", id);
+			}
+		}
+		review.setId(null);
+		rService.create(review);
+		reviews = t.getReviews();
 		Double sum = 0.0;
 		for(Review rev: reviews) {
 			sum += rev.getRating();

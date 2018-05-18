@@ -188,6 +188,12 @@
 			</article>
 		</c:if>
 		
+		<c:if test="${errors != null}">
+			<div class="notification is-danger">		
+				${errors}
+			</div>
+		</c:if>
+		
 		<!-- login in order to leave a review -->
 		<c:if test="${user == null}">
 			<article class="media">

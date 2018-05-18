@@ -87,6 +87,13 @@
 				${welcome}
 			</div>
 		</c:if>
+		
+		<!-- Show error messages to the user -->
+		<c:if test="${errors != null}">
+			<div class="notification is-danger">		
+				${errors}
+			</div>
+		</c:if>
 	
 		<!-- All the foodtrucks ordered by average rating -->
 		<c:forEach items="${foodtrucks}" var="foodtruck">	
