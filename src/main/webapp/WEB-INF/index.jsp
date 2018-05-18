@@ -13,6 +13,7 @@
 <body>
 	<div class="container">
 		
+		<!-- Website Greeting -->
 		<div class="hero is-dark">
             <div class="hero-body is-bold">
                 <h1 class="title">
@@ -22,7 +23,8 @@
             </div>
         </div>
         
-        <div class="tabs is-medium">
+        <!-- Basically a navbar -->
+        <div class="tabs is-medium is-centered">
         	<ul>
             	<li class="is-active">
                 	<a href="/">
@@ -52,14 +54,6 @@
                 </c:if>
                 <c:if test="${user != null}">
                 <li>
-                	<a href="/logout">
-                    	<span class="icon is-small">
-                        	<i class="fas fa-sign-out-alt"></i>
-                        </span>
-                        <span>Sign out</span>
-                    </a>
-                </li>
-                <li>
                 	<a href="/foodtrucks/new">
                     	<span class="icon is-small">
                         	<i class="fas fa-truck"></i>
@@ -67,47 +61,66 @@
                         <span>Add a truck</span>
                     </a>
                 </li>
+                <li>
+                	<p>
+                		<span class="icon is-small">
+                        	<i class="fas fa-user"></i>
+                        </span>
+                		<span>${user.username}</span>
+                	</p>
+                </li>
+                <li>
+                	<a href="/logout">
+                    	<span class="icon is-small">
+                        	<i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span>Sign out</span>
+                    </a>
+                </li>
                 </c:if>
             </ul>
 		</div>
 		
-		<c:if test="${user != null}">
-	    	<div class="notification is-primary">		
-				Welcome back ${user.username}!
+		<!-- Show a welcome message to the user -->
+		<c:if test="${welcome != null}">
+			<div class="notification is-primary">		
+				${welcome}
 			</div>
 		</c:if>
 	
+		<!-- All the foodtrucks ordered by average rating -->
 		<c:forEach items="${foodtrucks}" var="foodtruck">	
 			<article class="media">
-			  <figure class="media-left">
-			    <p class="image is-64x64">
-			      <i class="fas fa-truck is-large fa-3x"></i>
-			    </p>
-			  </figure>
-			  <div class="media-content">
-			    <div class="content">
-			      <p>
-			        <strong>${foodtruck.name}</strong>
-			        <br>
-			        Style: ${foodtruck.style}
-			        <br>
-			        Description: ${foodtruck.description}
-			        <br>
-			        Rating: ${foodtruck.avgRating} <span class="stars">${foodtruck.avgRating}</span>
-			      </p>
-			    </div>
-			  </div>
-			  <div class="media-right">
-			  	<c:if test="${user.id == foodtruck.op.id}">
-			  		<a href="/foodtruck/${foodtruck.id}/edit" class="button is-info">Edit</a>
-			  	</c:if>
-			    <a href="/foodtruck/${foodtruck.id}" class="button is-primary">Review</a>
-			  </div>
+			    <figure class="media-left">
+			        <p class="image is-64x64">
+			            <i class="fas fa-truck is-large fa-3x"></i>
+			        </p>
+			    </figure>
+			        <div class="media-content">
+			        	<div class="content">
+			        		<p>
+			        			<strong>${foodtruck.name}</strong>
+			        			<br>
+			        			Style: ${foodtruck.style}
+			        			<br>
+			        			Description: ${foodtruck.description}
+			        			<br>
+			        			Rating: ${foodtruck.avgRating} <span class="stars">${foodtruck.avgRating}</span>
+			      			</p>
+			    		</div>
+			  		</div>
+			  		<div class="media-right">
+			  			<c:if test="${user.id == foodtruck.op.id}">
+			  				<a href="/foodtruck/${foodtruck.id}/edit" class="button is-info">Edit</a>
+			  			</c:if>
+			    		<a href="/foodtruck/${foodtruck.id}" class="button is-primary">Review</a>
+			  		</div>
 			</article>
 		</c:forEach>
-		
+			
 	</div>
 	
+	<!-- renders the star icons -->
 	<script type="text/javascript" src="/js/stars.js"></script>
 	
 </body>
